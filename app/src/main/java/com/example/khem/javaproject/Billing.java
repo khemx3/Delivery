@@ -37,17 +37,4 @@ public class Billing {
             e.printStackTrace();
         }
     }
-
-
-
-    public static void main(String[] args){
-        Billing b = new Billing();
-
-        Map<String,Map<String,String>> m = new HashMap<String,Map<String,String>>();
-        Map<String,String> m2 = new HashMap<String,String>();
-        m2.put("3","300");
-        m.put("Fire Rice",m2);
-
-        b.payment("cus_E2M0NXMoitNqxM","usd",100,m);
-    }
 }

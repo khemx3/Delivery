@@ -23,8 +23,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class Cart extends AppCompatActivity {
 
@@ -39,11 +41,16 @@ public class Cart extends AppCompatActivity {
 
     List<Order> cart = new ArrayList<>();
 
+
     CartAdapter adapter;
+
+    int total = 0;
 
     protected void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
         setContentView(R.layout.activity_cart);
+
+
 
         database = FirebaseDatabase.getInstance();
         requests = database.getReference("Request");
@@ -55,6 +62,8 @@ public class Cart extends AppCompatActivity {
 
         txtTotalPrice = (TextView)findViewById(R.id.total_price);
         btnPlace = (Button)findViewById(R.id.btn_place_order);
+        loadListFood();
+
         btnPlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +73,6 @@ public class Cart extends AppCompatActivity {
             }
         });
 
-        loadListFood();
     }
 
     private void showAlertDialog() {
@@ -92,9 +100,8 @@ public class Cart extends AppCompatActivity {
                         cart
                 );
 
-                //Submit to Firebase
-                //We will using System.CurrentMills to key
-                requests.child(String.valueOf(System.currentTimeMillis()))
+
+                requests.child(main.name)
                         .setValue(request);
 
                 //Delete cart
@@ -115,14 +122,18 @@ public class Cart extends AppCompatActivity {
 
     }
 
+
     private void loadListFood() {
         cart = new Database(this).getCarts();
         adapter = new CartAdapter(cart, this);
         recyclerView.setAdapter(adapter);
 
-        int total = 0;
-        for(Order order:cart)
+        for(Order order:cart){
+            Map<String,String> sub = new HashMap<String,String>();
+            sub.put(order.getQuantity(),order.getPrice());
             total += (Integer.parseInt(order.getPrice())) * (Integer.parseInt(order.getQuantity()));
+        }
+
         Locale locale = new Locale("en", "US");
         NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
 

@@ -223,7 +223,7 @@ public class Login_activity extends AppCompatActivity {
                     if(e.equals(data.child("email").getValue()) && p.equals(data.child("pass").getValue()) ) {
                         ref.child("lastLogin").child("email").setValue(data.child("name").getValue());
                         Intent mainpage = new Intent(Login_activity.this, main.class);
-                        mainpage.putExtra("email", email.getText().toString());
+                        mainpage.putExtra("name", data.child("name").getValue().toString());
 
                         startActivity(mainpage);
                         check[0] = false;

@@ -44,10 +44,16 @@ public class main extends AppCompatActivity
     private DatabaseReference mDatabaseRef;
     private List<Food> mUploads;
 
+    static String name;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+
+        name = getIntent().getStringExtra("name");
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
