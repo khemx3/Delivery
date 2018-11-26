@@ -1,9 +1,9 @@
 package com.example.khem.javaproject;
 
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -31,47 +31,42 @@ public class Cart extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
 
-    //Firebase Database
     FirebaseDatabase database;
     DatabaseReference requests;
 
-    TextView textTotalPrice;
+    TextView txtTotalPrice;
     Button btnPlace;
 
     List<Order> cart = new ArrayList<>();
 
     CartAdapter adapter;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle saveInstanceState){
+        super.onCreate(saveInstanceState);
         setContentView(R.layout.activity_cart);
 
-        //Firebase
         database = FirebaseDatabase.getInstance();
-        requests = database.getReference("Requests");
+        requests = database.getReference("Request");
 
-        //init
-        recyclerView = findViewById(R.id.listCart);
+        recyclerView = (RecyclerView)findViewById(R.id.listCart);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        textTotalPrice = findViewById(R.id.total_price);
-        btnPlace = findViewById(R.id.btn_place_order);
-
+        txtTotalPrice = (TextView)findViewById(R.id.total_price);
+        btnPlace = (Button)findViewById(R.id.btn_place_order);
         btnPlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 showAlertDialog();
+                // chivavacat
+                // may be update database and clear items in the cart?
             }
         });
 
-//        loadListFood();
+        loadListFood();
     }
 
-    //Method showAlertDialog()
     private void showAlertDialog() {
         final AlertDialog.Builder alertDialog = new AlertDialog.Builder(Cart.this);
         alertDialog.setTitle("One more step!");
@@ -91,18 +86,16 @@ public class Cart extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
 
                 //Create new Request
-//                Request request = new Request(
-//                        Common.currentUser.getPhone(),
-//                        Common.currentUser.getName(),
-//                        editAddress.getText().toString(),
-//                        textTotalPrice.getText().toString(),
-//                        cart
-//                );
-//
-//                //Submit to Firebase
-//                //We will using System.CurrentMills to key
-//                requests.child(String.valueOf(System.currentTimeMillis()))
-//                        .setValue(request);
+                Request request = new Request(
+                        editAddress.getText().toString(),
+                        txtTotalPrice.getText().toString(),
+                        cart
+                );
+
+                //Submit to Firebase
+                //We will using System.CurrentMills to key
+                requests.child(String.valueOf(System.currentTimeMillis()))
+                        .setValue(request);
 
                 //Delete cart
                 new Database(getBaseContext()).cleanCart();
@@ -122,19 +115,17 @@ public class Cart extends AppCompatActivity {
 
     }
 
-    //Method for load food
     private void loadListFood() {
         cart = new Database(this).getCarts();
         adapter = new CartAdapter(cart, this);
         recyclerView.setAdapter(adapter);
 
-        //Calculate total price
         int total = 0;
-        for (Order order : cart){
-            total += (Integer.parseInt(order.getPrice()))*(Integer.parseInt(order.getQuantity()));
-        }
+        for(Order order:cart)
+            total += (Integer.parseInt(order.getPrice())) * (Integer.parseInt(order.getQuantity()));
         Locale locale = new Locale("en", "US");
-        NumberFormat fmt = NumberFormat.getCurrencyInstance();
-        textTotalPrice.setText(fmt.format(total));
+        NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
+
+        txtTotalPrice.setText(fmt.format(total));
     }
 }

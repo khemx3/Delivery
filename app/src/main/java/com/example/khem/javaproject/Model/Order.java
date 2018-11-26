@@ -2,7 +2,7 @@ package com.example.khem.javaproject.Model;
 
 public class Order {
 
-    private String ProductId;
+    private String ProductID;
     private String ProductName;
     private String Quantity;
     private String Price;
@@ -10,19 +10,15 @@ public class Order {
 
     public Order() {}
 
-    public Order(String productId, String productName, String quantity, String price) {
-        ProductId = productId;
+    public Order(String productID, String productName, String quantity, String price) {
+        ProductID = productID;
         ProductName = productName;
         Quantity = quantity;
         Price = price;
     }
 
-    public String getProductId() {
-        return ProductId;
-    }
-
-    public void setProductId(String productId) {
-        ProductId = productId;
+    public void setProductID(String productId) {
+        ProductID = productId;
     }
 
     public String getProductName() {
@@ -48,4 +44,9 @@ public class Order {
     public void setPrice(String price) {
         Price = price;
     }
+
+    public String getProductID() {
+        return ProductID;
+    }
+
 }

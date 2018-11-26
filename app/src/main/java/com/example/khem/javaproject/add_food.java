@@ -58,16 +58,20 @@ public class add_food extends AppCompatActivity {
         text_price = (TextView) findViewById(R.id.text_price);
         text_des = (TextView) findViewById(R.id.text_des);
 
+
         btn_save = (Button) findViewById(R.id.btn_save);
         btn_image = (Button) findViewById(R.id.btn_image);
 
         imageView = (ImageView) findViewById(R.id.imageView);
+
         spinnercat = (Spinner) findViewById(R.id.spinnercat);
 
         btn_save.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 addFood();
+//                startActivity(new Intent(edit_item.this, add_item.class));
             }
         });
 
@@ -87,6 +91,8 @@ public class add_food extends AppCompatActivity {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -108,6 +114,7 @@ public class add_food extends AppCompatActivity {
         final String desc = text_des.getText().toString().trim();
         final String category = spinnercat.getSelectedItem().toString();
 
+
         if (!TextUtils.isEmpty(name)) {
 
             final String id = mDatabase.push().getKey();
@@ -121,9 +128,17 @@ public class add_food extends AppCompatActivity {
                         while (!urlTask.isSuccessful());
                         Uri downloadUrl = urlTask.getResult();
                         Food food = new Food(id, name, desc, price, category,downloadUrl.toString());
+//                        FriendlyMessage friendlyMessage = new FriendlyMessage(null, mUsername, downloadUrl.toString());
                         mDatabase.push().setValue(food);
                     }
+//                            @Override
+//                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//
+//                                Food food = new Food(id, name, desc, price, category,taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
+//                                mDatabase.child(id).setValue(food);
+//                            }
                         });
+
             } else {
                 Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
             }
@@ -133,12 +148,16 @@ public class add_food extends AppCompatActivity {
         } else {
             Toast.makeText(this, "You should enter a name", Toast.LENGTH_LONG).show();
         }
+
+
     }
+
 
     private String getFileExtension(Uri uri) {
         ContentResolver cR = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
+
 
 }

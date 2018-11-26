@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:background="@drawable/my_bg"
-    tools:context=".Cart">
+    tools:context="com.example.khem.javaproject.Cart">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/listCart"

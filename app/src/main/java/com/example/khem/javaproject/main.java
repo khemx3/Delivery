@@ -27,7 +27,6 @@ import com.squareup.picasso.Picasso;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Filter;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -39,9 +38,11 @@ public class main extends AppCompatActivity
 
     private RecyclerView mRecyclerView;
     private ImageAdapter mAdapter;
+
+    private ProgressBar mProgressCircle;
+
     private DatabaseReference mDatabaseRef;
     private List<Food> mUploads;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +55,8 @@ public class main extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent cartIntent = new Intent(main.this, Cart.class);
+                startActivity(cartIntent);
             }
         });
 
@@ -68,14 +69,14 @@ public class main extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-        // show food list
-
         mRecyclerView = findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+//        mProgressCircle = findViewById(R.id.progress_circle);
+
         mUploads = new ArrayList<>();
+
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("menu");
 
         mDatabaseRef.addValueEventListener(new ValueEventListener() {
@@ -87,16 +88,19 @@ public class main extends AppCompatActivity
                 }
 
                 mAdapter = new ImageAdapter(main.this, mUploads);
-                mRecyclerView.setAdapter(mAdapter);
 
+                mRecyclerView.setAdapter(mAdapter);
+//                mAdapter.setOnItemClickListener(main.this);
+//                mProgressCircle.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Toast.makeText(main.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+//                mProgressCircle.setVisibility(View.INVISIBLE);
             }
-
         });
+
 
     }
 
@@ -135,13 +139,14 @@ public class main extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_admin) {
+            // Handle the camera action
             startActivity(new Intent(main.this, list_food.class));
         } if (id == R.id.nav_profile) {
 
         } if (id == R.id.nav_menu) {
 //            startActivity(new Intent(main.this, ImagesActivity.class));
         } if (id == R.id.nav_cart) {
-            startActivity(new Intent(main.this, Cart.class));
+
         } if (id == R.id.nav_orders) {
 
         } if (id == R.id.nav_signout) {

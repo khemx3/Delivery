@@ -4,6 +4,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Logger;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -37,8 +39,6 @@ public class food_details extends AppCompatActivity {
     Food currentFood;
     Bundle food;
 
-    private Database mydb;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,14 +56,13 @@ public class food_details extends AppCompatActivity {
         btnCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle currentFood = food;
                 new Database(getBaseContext()).addToCart(new Order(
-                        currentFood.get("id").toString(),
-                        currentFood.get("name").toString(),
+                        food.get("id").toString(),
+                        food.get("name").toString(),
                         numberButton.getNumber(),
-                        currentFood.get("price").toString()
+                        food.get("price").toString()
                 ));
-                Toast.makeText(food_details.this, food.get("name").toString() + " added", Toast.LENGTH_SHORT).show();
+                Toast.makeText(food_details.this, food.get("name").toString()+ " Add to cart", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -73,13 +72,23 @@ public class food_details extends AppCompatActivity {
         foodImage = findViewById(R.id.food_image);
 
         collapsingToolbarLayout = findViewById(R.id.collapsing);
+//        collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppbar);
+//        collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapseAppbar);
 
-        getDetailsFood(food.get("id").toString());
+
+//        if (getIntent() != null){
+//            foodId = getIntent().getStringExtra("FoodId");
+//        }
+//        if(!foodId.isEmpty()){
+            getDetailsFood(food.get("id").toString());
+//        }else {
+//            Toast.makeText(this, "Error: foodId = "+foodId, Toast.LENGTH_SHORT).show();
+//        }
     }
 
     // getDetailsFood() method
     private void getDetailsFood(String foodId) {
-
+        Log.println(Log.DEBUG,"QWQW", ""+foodId);
         Bundle currentFood = food;
         Picasso.get().load(currentFood.get("image").toString()).into(foodImage);
         collapsingToolbarLayout.setTitle(currentFood.get("name").toString());

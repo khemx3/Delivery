@@ -59,6 +59,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
                 intent.putExtras(food);
 
+
                 mContext.startActivity(intent);
             }
         });
