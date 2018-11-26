@@ -1,4 +1,5 @@
 <resources>
+    <string name="facebook_app_id">254814645196843</string> <string name="fb_login_protocol_scheme">fb254814645196843</string>
     <string name="app_name">javaproject</string>
     <array name="category">
         <item>Burgurs</item>
