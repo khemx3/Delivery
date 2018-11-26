@@ -1,6 +1,7 @@
 package com.example.khem.javaproject;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -21,8 +22,11 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONObject;
 
@@ -30,6 +34,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.concurrent.CountDownLatch;
 
 public class Login_activity extends AppCompatActivity {
 
@@ -69,11 +74,8 @@ public class Login_activity extends AppCompatActivity {
         login_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                check_user(email.getText().toString(),pass.getText().toString());
 
-
-
-                Intent mainpage = new Intent(Login_activity.this,main.class);
-                mainpage.putExtra("email",email.getText().toString());
             }
         });
 
@@ -209,11 +211,38 @@ public class Login_activity extends AppCompatActivity {
     }
 
 
-    protected boolean check_user(String e,String p){
+     protected void check_user(final String e, final String p){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference ref = database.getReference();
 
-        ref.child("User").addValueEventListener()
+         final boolean[] check = {true};
+        ref.child("User").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot data : dataSnapshot.getChildren() ){
+                    if(e.equals(data.child("email").getValue()) && p.equals(data.child("pass").getValue()) ) {
+                        ref.child("lastLogin").child("email").setValue(data.child("name").getValue());
+                        Intent mainpage = new Intent(Login_activity.this, main.class);
+                        mainpage.putExtra("email", email.getText().toString());
+
+                        startActivity(mainpage);
+                        check[0] = false;
+                        break;
+                    }
+                }
+                if(check[0]) {
+                    ShowError missing = new ShowError(Login_activity.this, "Email or Password is Invalid !!!!");
+                    missing.setContentView(R.layout.missingdialog);
+
+                    missing.show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
     }
 

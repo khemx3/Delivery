@@ -150,11 +150,19 @@ public class main extends AppCompatActivity
         } if (id == R.id.nav_orders) {
 
         } if (id == R.id.nav_signout) {
-
+            sign_out();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    protected void sign_out(){
+        DatabaseReference mDatabase;
+        mDatabase = FirebaseDatabase.getInstance().getReference("lastLogin/email");
+
+        mDatabase.setValue("No Login");
+        finish();
     }
 }

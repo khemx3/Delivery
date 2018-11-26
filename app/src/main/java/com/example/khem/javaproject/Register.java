@@ -10,6 +10,8 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.webkit.WebSettings;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -163,6 +165,7 @@ public class Register extends Activity {
 
     public void sendRequest()  {
 
+
         String url = "https://www.google.com/recaptcha/api/siteverify";
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -238,7 +241,7 @@ public class Register extends Activity {
         result.put("phone", phone.getText().toString());
         result.put("customer_id",customer_id);
 
-        mDatabase.child("User").child(email.getText().toString()).setValue(result);
+        mDatabase.child("User").child(name.getText().toString()).setValue(result);
     }
 
 

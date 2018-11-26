@@ -41,14 +41,17 @@ public class MainActivity extends AppCompatActivity {
         final DatabaseReference ref = database.getReference();
 
      // Attach a listener to read the data at our posts reference
-        ref.child("lastLogin").addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.child("lastLogin").child("email").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getKey().toString().equals("No Logined")){
+                if(dataSnapshot.getValue().toString().equals("No Login")){
                     startActivity(new Intent(MainActivity.this,Login_activity.class));
                 }
                 else{
+                    Intent mainpage = new Intent(MainActivity.this,main.class);
+                    mainpage.putExtra("email",dataSnapshot.getValue().toString());
 
+                    startActivity(mainpage);
                 }
             }
 

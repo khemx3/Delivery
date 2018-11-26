@@ -65,7 +65,7 @@ public class Creaditregister extends Activity {
 
     protected void setLastLogin(){
         DatabaseReference mDatabase;
-        mDatabase = FirebaseDatabase.getInstance().getReference("User/lastLogin");
+        mDatabase = FirebaseDatabase.getInstance().getReference("lastLogin/email");
 
         mDatabase.setValue(name);
 
@@ -144,4 +144,6 @@ public class Creaditregister extends Activity {
     public String getId() {
         return id;
     }
+
+
 }
