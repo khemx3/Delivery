@@ -20,8 +20,11 @@ import com.example.khem.javaproject.Model.Request;
 import com.example.khem.javaproject.ViewHolder.CartAdapter;
 import com.example.khem.javaproject.ViewHolder.OrderAdater;
 import com.google.android.gms.common.internal.service.Common;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -141,17 +144,19 @@ public class Cart extends AppCompatActivity {
         txtTotalPrice.setText(fmt.format(total));
     }
 
-    protected String searc_cus(String name){
+    protected void searc_cus(String name){
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference ref = database.getReference();
 
         // Attach a listener to read the data at our posts reference
-        ref.child("User").child(name).child("id").addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.child("User").child(varible.name).child("customer_id").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 showAlertDialog();
-                Billing.payment(dataSnapshot.getValue().toString(),"USD",total);
+                Billing a = new Billing();
+                a.payment(dataSnapshot.getValue().toString(),"USD",total);
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
