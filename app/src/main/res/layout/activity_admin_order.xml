@@ -7,6 +7,7 @@
     tools:context=".admin_order">
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/order_recycle"
         android:layout_width="449dp"
         android:layout_height="643dp"
         tools:layout_editor_absoluteX="0dp"
