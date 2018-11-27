@@ -2,6 +2,7 @@ package com.example.khem.javaproject;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import com.example.khem.javaproject.Database.Database;
 import com.example.khem.javaproject.Model.Order;
 import com.example.khem.javaproject.Model.Request;
 import com.example.khem.javaproject.ViewHolder.CartAdapter;
+import com.example.khem.javaproject.ViewHolder.OrderAdater;
 import com.google.android.gms.common.internal.service.Common;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -67,8 +69,7 @@ public class Cart extends AppCompatActivity {
         btnPlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAlertDialog();
-                // chivavacat
+                searc_cus(varible.name);
                 // may be update database and clear items in the cart?
             }
         });
@@ -101,7 +102,7 @@ public class Cart extends AppCompatActivity {
                 );
 
 
-                requests.child(main.name)
+                requests.child(varible.name)
                         .setValue(request);
 
                 //Delete cart
@@ -138,5 +139,23 @@ public class Cart extends AppCompatActivity {
         NumberFormat fmt = NumberFormat.getCurrencyInstance(locale);
 
         txtTotalPrice.setText(fmt.format(total));
+    }
+
+    protected String searc_cus(String name){
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference ref = database.getReference();
+
+        // Attach a listener to read the data at our posts reference
+        ref.child("User").child(name).child("id").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                showAlertDialog();
+                Billing.payment(dataSnapshot.getValue().toString(),"USD",total);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

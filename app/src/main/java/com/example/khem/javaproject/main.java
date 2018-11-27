@@ -44,14 +44,13 @@ public class main extends AppCompatActivity
     private DatabaseReference mDatabaseRef;
     private List<Food> mUploads;
 
-    static String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        name = getIntent().getStringExtra("name");
+        varible.name = getIntent().getStringExtra("name");
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -147,9 +146,7 @@ public class main extends AppCompatActivity
         if (id == R.id.nav_admin) {
             // Handle the camera action
             startActivity(new Intent(main.this, admin.class));
-        } if (id == R.id.nav_profile) {
-
-        } if (id == R.id.nav_menu) {
+        }  if (id == R.id.nav_menu) {
 //            startActivity(new Intent(main.this, ImagesActivity.class));
         } if (id == R.id.nav_cart) {
 

@@ -26,5 +26,12 @@ public class admin extends AppCompatActivity {
             }
         });
 
+        btn_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(admin.this,add_food.class));
+            }
+        });
+
     }
 }

@@ -50,8 +50,9 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(new Intent(MainActivity.this,Login_activity.class));
                 }
                 else{
+                    varible.name =  dataSnapshot.getValue().toString();
                     Intent mainpage = new Intent(MainActivity.this,main.class);
-                    mainpage.putExtra("email",dataSnapshot.getValue().toString());
+                    mainpage.putExtra("name",dataSnapshot.getValue().toString());
 
                     startActivity(mainpage);
                 }

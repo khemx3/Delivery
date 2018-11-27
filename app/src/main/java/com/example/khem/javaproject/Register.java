@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -52,9 +53,11 @@ public class Register extends Activity {
     EditText repass;
     EditText email;
     EditText phone;
+    int showclick = 0;
 
     Button next;
     Button detail;
+    Button show;
 
     public Register(){ }
 
@@ -73,6 +76,7 @@ public class Register extends Activity {
 
         Button next  = (Button)findViewById(R.id.next);
         Button detail = (Button)findViewById(R.id.detail);
+        show = (Button)findViewById(R.id.eye);
 
 
 
@@ -95,6 +99,19 @@ public class Register extends Activity {
                 System.out.println(e);}
         }
 
+        show.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(showclick == 0){
+                    pass.setInputType(InputType.TYPE_CLASS_TEXT);
+                    showclick = 1;
+                }
+                else{
+                    pass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    showclick = 0;
+                }
+            }
+        });
 
         detail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -283,3 +300,4 @@ public class Register extends Activity {
         this.customer_id = customer_id;
     }
 }
+
