@@ -146,7 +146,7 @@ public class main extends AppCompatActivity
 
         if (id == R.id.nav_admin) {
             // Handle the camera action
-            startActivity(new Intent(main.this, list_food.class));
+            startActivity(new Intent(main.this, admin.class));
         } if (id == R.id.nav_profile) {
 
         } if (id == R.id.nav_menu) {

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class OrderAdater extends RecyclerView.Adapter<OrderAdater.MyViewHolder>{
 
-    private ArrayList<String> mDataset;
+    private ArrayList<Object> mDataset;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
@@ -27,7 +27,7 @@ public class OrderAdater extends RecyclerView.Adapter<OrderAdater.MyViewHolder>{
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public OrderAdater (ArrayList<String> myDataset) {
+    public OrderAdater (ArrayList<Object> myDataset) {
         mDataset = myDataset;
     }
 
@@ -36,14 +36,14 @@ public class OrderAdater extends RecyclerView.Adapter<OrderAdater.MyViewHolder>{
     public OrderAdater.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         TextView v = (TextView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.order_layout , parent, false);
+                .inflate(R.layout.order_text_view , parent, false);
         OrderAdater.MyViewHolder vh = new OrderAdater.MyViewHolder(v);
         return vh;
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-        myViewHolder.mTextView.setText(mDataset.get(i));
+        myViewHolder.mTextView.setText(mDataset.get(i).toString());
     }
 
     @Override

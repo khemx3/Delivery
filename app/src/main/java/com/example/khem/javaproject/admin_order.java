@@ -28,7 +28,9 @@ public class admin_order extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    protected ArrayList<String> dataset = new ArrayList<String>();
+    protected ArrayList<Object> dataset = new ArrayList<Object>();
+
+    public admin_order(){}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +46,8 @@ public class admin_order extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // specify an adapter (see also next example)
-        mAdapter = new OrderAdater(dataset);
-        mRecyclerView.setAdapter(mAdapter);
+       getData();
+
     }
 
     public void getData(){
@@ -58,8 +59,16 @@ public class admin_order extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot a : dataSnapshot.getChildren()){
-                    dataset.add(a.getKey());
+                    String one = "";
+                    one += "Name : "+ a.getKey()+"\n";
+                    for(DataSnapshot b : a.child("foods").getChildren()){
+                        one += b.child("productName").getValue()+" Quantity : "+b.child("quantity").getValue()+" Price : "+b.child("price").getValue()+" \n";
+                    }
+                    one += "Address : "+a.child("address").getValue();
+                    dataset.add(one);
                 }
+                mAdapter = new OrderAdater(dataset);
+                mRecyclerView.setAdapter(mAdapter);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
